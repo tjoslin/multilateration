@@ -14,7 +14,7 @@ class Target:
     def __init__(self, ID):
         self.loc = None
         self.ID = str(ID)
-        self.measures = []
+        self.measures = {}
 
     def __str__(self):
         if self.loc is None:
@@ -23,4 +23,4 @@ class Target:
             return 'Target ' + self.ID + ' @ Real Location:' + self.loc.__str__()
 
     def add_measure(self, a, d):
-        self.measures.append((a, d))
+        self.measures[a] = d

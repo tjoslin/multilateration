@@ -41,11 +41,8 @@ class Project:
         for tID in self.TargetDic.keys():
             tar = self.TargetDic[tID]
             cA = []
-            for tup in tar.measures:
-                landmark = tup[0]
-                c = self.AnchorDic[landmark].loc
-                d = tup[1]
-                cA.append(circle(c, d))
+            for anchor, distance in tar.measures.items():
+                cA.append(circle(self.AnchorDic[anchor].loc, distance))
             if self.solver == 'LSE':
                 tar.loc = lse(cA, mode=self.mode, cons=False)
             elif self.solver == 'LSE_GC':
