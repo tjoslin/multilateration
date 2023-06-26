@@ -1,12 +1,10 @@
 # Localization
 
 ### Introduction
-Localization package provides tools for multilateration and triangulation in `2D`,`3D` and on `earth surface`.
-The current model of the earth, supported by the package, is called `Earth1`.
-Earth1 models the earth as an ideal sphere having radius of 6378.1 kilometers.
+Localization package provides tools for multilateration and triangulation in `2D` and `3D`
 
 ### Installation
-The package has been tested with python2.7 and python3.6. Use pip to install the package:
+Use pip to install the package:
 ```
 pip install localization
 ```
@@ -23,15 +21,13 @@ To initilaize new localization Project use:
 P=lx.Project(mode=<mode>,solver=<solver>)
 ```
 
-Currently three modes are supported:
+Currently two modes are supported:
  - 2D
  - 3D
- - Earth1
 
 Also three solvers can be used:
  - LSE for least square error
  - LSE_GC for least square error with geometric constraints. Geometric constraints force the solutions to be in the intersection areas of all multilateration circles.
- - CCA for centroid method, i.e., the solution will be the centroid of the intersection area. If no common intersection area exist, the area with maximum overlap is used.
 
 To add anchors to the project use:
 
@@ -80,8 +76,5 @@ P.solve()
 
 # Then the target location is:
 
-print(t.loc)
+t.loc
 ```
-
----
-contact: __kamal.shadi85@gmail.com__

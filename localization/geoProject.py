@@ -19,20 +19,14 @@ class Project:
         self.solver = sol
 
     def add_anchor(self, ID, loc):
-        try:
-            self.AnchorDic[ID]
-            print(str(ID) + ':Anchor with same ID already exists')
-            return
-        except KeyError:
-            a = Anchor(ID, point(loc))
-            self.AnchorDic[ID] = a
+        a = Anchor(ID, point(loc))
+        self.AnchorDic[ID] = a
         return a
 
     def add_target(self, ID=None):
         try:
             self.TargetDic[ID]
-            print('Target with same ID already exists')
-            return
+            return (self.TargetDic[ID], ID)
         except:
             self.nt = self.nt + 1
             if ID:
@@ -58,14 +52,4 @@ class Project:
                 try:
                     tar.loc = lse(cA, mode=self.mode, cons=True)
                 except cornerCases as cc:
-                    if cc.tag == 'Disjoint':
-                        print(tar.ID + ' could not be localized by LSE_GC')
-                    else:
-                        print('Unknown Error in localizing ' + tar.ID)
-            elif self.solver == 'CCA':
-                if not self.detail:
-                    tar.loc, n = CCA(cA, mode=self.mode, detail=False)
-                    return n
-                else:
-                    tar.loc, n, P, iP = CCA(cA, mode=self.mode, detail=True)
-                    return (n, P, iP)
+                    tar.loc = None

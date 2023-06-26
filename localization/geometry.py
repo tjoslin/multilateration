@@ -418,12 +418,9 @@ class circle:
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
-    def touch(self, o, fg=0):
+    def touch(self, o):
         d = self.c.dist(o.c)
-        if fg == 0:
-            met = self.r + o.r
-        else:
-            met = 180.0 * (self.r + o.r) / (E.R * math.pi)
+        met = self.r + o.r
         if d < met + res:
             return True
         else:
@@ -631,28 +628,6 @@ class Sphere:
         z = self.R * math.sin(lat)
         return self.c + point(x, y, z)
 
-    def gcd(self, lon1, lat1, lon2, lat2):
-        """
-        Calculate the great circle distance between two points
-        on the earth (specified in decimal degrees)
-        """
-        # convert decimal degrees to radians
-        lon1, lat1, lon2, lat2 = map(math.radians, [lon1, lat1, lon2, lat2])
-
-        # haversine formula
-        dlon = lon2 - lon1
-        dlat = lat2 - lat1
-        a = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
-        c = 2 * math.asin(math.sqrt(a))
-
-        dis = E.R * c
-        return dis
-
-    def gcd2l(self, d):
-        # great circle distance to straight line distance
-        theta = d / self.R
-        return (2 * (self.R ** 2) * (1 - math.cos(theta))) ** 0.5
-
     def side(self, p):
         d = pdist(self.c, p)
         if d > R - res and d < R + res:
@@ -774,7 +749,6 @@ class Ray:
                 a1 = self.c.angle(p[0])
                 a2 = self.c.angle(p[1])
                 if abs(a1 - a2) < res:
-                    print('hey')
                     if p[0].dist(self.c) > p[1].dist(self.c):
                         return [p[1], p[0]]
                     else:
@@ -909,21 +883,6 @@ class ndisc:
                 pc = self.intersect(ray)
                 pll.append(pc)
             except geoError:
-                print('Unknown Error in ray-ndisc intersection')
-                raise geoError('Unknown')
+                raise geoError('Unknown Error in ray-ndisc intersection')
         pll[-1] = pll[0]
         return pll
-
-
-E = Sphere(point(0, 0, 0), 6378100)
-# ~
-
-# ~ if __name__=='__main__':
-# ~ vc=point(5439680.78365,-959162.488598,3189050.0)
-# ~ ws=point(10,30)
-# ~ wc=E.map(ws,inv=True)
-# ~ st=wc.dist(vc)
-# ~ vs=E.map(vc)
-# ~ print( st)
-# ~ yy=E.gcd(vs.x,vs.y,ws.x,ws.y)
-# ~ print( E.gcd2l(yy))
